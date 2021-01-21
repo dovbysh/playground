@@ -20,6 +20,24 @@ function houseUse(itemstack, user, pointed_thing)
     local pos = user:get_pos()
     if pointed_thing.type == "node" and minetest.is_protected(pointed_thing.above, user:get_player_name()) == false then
         minetest.set_node(pointed_thing.above, { name = "mapgen_stone" })
+        local qSize = 16
+        local floorHeight = 5
+        for dy = -1, floorHeight do
+            for di = -(qSize / 2), qSize / 2 do
+                minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy, z = 0 }), { name = "mapgen_stone" })
+                minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy, z = -qSize }), { name = "mapgen_stone" })
+                minetest.set_node(vector.add(pointed_thing.above, { x = -(qSize / 2), y = dy, z = di - (qSize / 2) }), { name = "mapgen_stone" })
+                minetest.set_node(vector.add(pointed_thing.above, { x = (qSize / 2), y = dy, z = di - (qSize / 2) }), { name = "mapgen_stone" })
+            end
+        end
+        for dy = -1, 0 do
+            for di = -(qSize / 2), qSize / 2 do
+                for dz = 0, qSize do
+                    minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy, z = -dz }), { name = "mapgen_stone" })
+                    minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy + floorHeight + 2, z = -dz }), { name = "mapgen_stone" })
+                end
+            end
+        end
     end
     return itemstack
 end
