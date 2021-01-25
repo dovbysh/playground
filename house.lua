@@ -34,8 +34,16 @@ function houseUse(itemstack, user, pointed_thing)
             for di = -(qSize / 2), qSize / 2 do
                 for dz = 0, qSize do
                     minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy, z = -dz }), { name = "mapgen_stone" })
-                    minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy + floorHeight + 2, z = -dz }), { name = "mapgen_stone" })
+                    minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy + floorHeight + 2, z = -dz }), { name = "mcl_ocean:sea_lantern" })
                 end
+            end
+        end
+        for dy = 0, 3 do
+            for di = -2, 2 do
+                minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy, z = 0 }), { name = "air" })
+                minetest.set_node(vector.add(pointed_thing.above, { x = di, y = dy+1, z = -qSize }), { name = "mcl_core:glass" })
+                minetest.set_node(vector.add(pointed_thing.above, { x = -(qSize / 2), y = dy+1, z = di - (qSize / 2) }), { name = "mcl_core:glass" })
+                minetest.set_node(vector.add(pointed_thing.above, { x = (qSize / 2), y = dy+1, z = di - (qSize / 2) }), { name = "mcl_core:glass" })
             end
         end
     end
