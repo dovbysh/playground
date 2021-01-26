@@ -1,5 +1,6 @@
-minetest.register_node("playground:gun2", {
-    description = "Digger",
+
+minetest.register_node("playground:bridge", {
+    description = "bridge",
     range = 10,
     drawtype = "mesh",
     mesh = "playground_gun_wielded.obj",
@@ -12,20 +13,17 @@ minetest.register_node("playground:gun2", {
         return itemstack
     end,
     on_use = function(itemstack, user, pointed_thing)
-        diggerUse(itemstack, user, pointed_thing, 2)
+        bridgeUse(itemstack, user, pointed_thing, 2)
         return itemstack
     end,
 })
 
-function diggerUse(itemstack, user, pointed_thing, type)
+function bridgeUse(itemstack, user, pointed_thing, type)
     if pointed_thing.type == "node" and minetest.is_protected(pointed_thing.above, user:get_player_name()) == false then
-        k = getXYZ(vector.direction(user:get_pos(), pointed_thing.under))
-        for dx = -5 + 5 * k.dx, 5 + 5 * k.dx do
-            for dy = -5 + 5 * k.dy, 5 + 5 * k.dy do
-                for dz = -5 + 5 * k.dz, 5 + 5 * k.dz do
-                    minetest.dig_node(vector.add(pointed_thing.under, { x = dx, y = dy, z = dz }))
-                end
-            end
+        k = getXorZ(vector.direction(user:get_pos(), pointed_thing.under))
+        --minetest.chat_send_all("zz: " .. debug.getinfo(1).currentline .. dump(k))
+        for di = 0, 16 do
+            minetest.set_node(vector.add(pointed_thing.under, { x = di * k.dx, y = 0, z = di * k.dz }), { name = "mapgen_stone" })
         end
     end
     return itemstack

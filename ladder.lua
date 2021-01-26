@@ -17,20 +17,9 @@ minetest.register_node("playground:ladder", {
     end,
 })
 
-function getXorZ(direction)
-    res = { dx = 0, dz = 0 }
-    if math.abs(direction.x) > math.abs(direction.z) then
-        res.dx = direction.x / math.abs(direction.x)
-    else
-        res.dz = direction.z / math.abs(direction.z)
-    end
-    return res
-end
-
 function ladderUse(itemstack, user, pointed_thing, type)
     if pointed_thing.type == "node" and minetest.is_protected(pointed_thing.above, user:get_player_name()) == false then
         k = getXorZ(vector.direction(user:get_pos(), pointed_thing.under))
-        minetest.chat_send_all("zz: " .. debug.getinfo(1).currentline .. dump(k))
         for di = 0, 16 do
             minetest.set_node(vector.add(pointed_thing.under, { x = di * k.dx, y = di, z = di * k.dz }), { name = "mapgen_stone" })
         end
